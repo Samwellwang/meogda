@@ -9,19 +9,29 @@ function HomeScreen({ navigation }) {
       <Text>Home Screen</Text>
       <Button
         title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
+        onPress={() => navigation.navigate('Details',{
+            itemId: 86,
+            otherParam: 'anything you want here',
+          })}
       />
     </View>
   );
 }
 
-function DetailsScreen({navigation}) {
+function DetailsScreen({navigation,route}) {
+
+    const {itemId, otherParam } =route.params;
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Details Screen</Text>
-      <Button title="Go to Details... again with history stack" onPress={() => navigation.navigate('Details')}/>
-      <Button title="Go to Details... again without history stack" onPress={() => navigation.push('Details')}/>
+      <Text>itemId:{itemId}</Text>
+      <Text>otherParam: {JSON.stringify(otherParam)}</Text>
+      <Button title="Go to Details... again with history stack" onPress={() => navigation.navigate('Details',{itemId: Math.floor(Math.random() * 100)})}/>
+      <Button title="Go to Details... again without history stack" onPress={() => navigation.push('Details',route.params)}/>
       <Button title="Go Back" onPress={() => navigation.goBack()}/>
+      <Button title="Go Home1" onPress={() => navigation.navigate("Home2")}/>
+      <Button title="Go Home2" onPress={() => navigation.popToTop()}/>
     </View>
   );
 }
