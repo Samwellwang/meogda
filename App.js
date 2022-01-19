@@ -14,6 +14,7 @@ function HomeScreen({ navigation }) {
             otherParam: 'anything you want here',
           })}
       />
+      <Button title ="change the title" onPress={()=>navigation.setOption({title:"new title"})}/>
     </View>
   );
 }
@@ -42,7 +43,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home2" component={HomeScreen}  options={{ title: 'Overview2' }} />
+        <Stack.Screen name="Home2" component={HomeScreen}  options={{ title: 'Home' }} />
         <Stack.Screen name="Details" component={DetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
