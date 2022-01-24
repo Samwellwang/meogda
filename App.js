@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button,View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FlexDirectionBasics from "./howtolayout"
 
 function HomeScreen({ navigation }) {
   return (
@@ -14,7 +15,13 @@ function HomeScreen({ navigation }) {
             otherParam: 'anything you want here',
           })}
       />
-      <Button title ="change the title" onPress={()=>navigation.setOption({title:"new title"})}/>
+      <Button 
+      title ="change the title" 
+      onPress={() => navigation.setOption({title:"new title"})}/>
+      <Button 
+      title = "learn how to layout"
+      onPress={()=> navigation.navigate('layout')}
+      />
     </View>
   );
 }
@@ -24,7 +31,7 @@ function DetailsScreen({navigation,route}) {
     const {itemId, otherParam } =route.params;
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' ,flexDirection:"row"}}>
       <Text>Details Screen</Text>
       <Text>itemId:{itemId}</Text>
       <Text>otherParam: {JSON.stringify(otherParam)}</Text>
@@ -43,8 +50,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home2" component={HomeScreen}  options={{ title: 'Home' }} />
+        <Stack.Screen name="Home2" component={HomeScreen}  options={{ title: 'React Native learn doc' }} />
         <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="layout" component={FlexDirectionBasics} />
       </Stack.Navigator>
     </NavigationContainer>
   );
