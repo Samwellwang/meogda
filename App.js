@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Button,View, Text } from 'react-native';
+import { Button,View, Text,TouchableOpacity,StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FlexDirectionBasics from "./howtolayout"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 
 function HomeScreen({ navigation }) {
   return (
@@ -17,11 +19,7 @@ function HomeScreen({ navigation }) {
       />
       <Button 
       title ="change the title" 
-      onPress={() => navigation.setOption({title:"new title"})}/>
-      <Button 
-      title = "learn how to layout"
-      onPress={()=> navigation.navigate('layout')}
-      />
+      onPress={() => navigation.setOptions({title:"new title"})}/>
     </View>
   );
 }
@@ -31,31 +29,97 @@ function DetailsScreen({navigation,route}) {
     const {itemId, otherParam } =route.params;
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' ,flexDirection:"row"}}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' ,flexDirection:"column"}}>
       <Text>Details Screen</Text>
       <Text>itemId:{itemId}</Text>
       <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-      <Button title="Go to Details... again with history stack" onPress={() => navigation.navigate('Details',{itemId: Math.floor(Math.random() * 100)})}/>
-      <Button title="Go to Details... again without history stack" onPress={() => navigation.push('Details',route.params)}/>
-      <Button title="Go Back" onPress={() => navigation.goBack()}/>
-      <Button title="Go Home1" onPress={() => navigation.navigate("Home3")}/>
-      <Button title="Go Home2" onPress={() => navigation.popToTop()}/>
+      <View >
+          <TouchableOpacity style = {style.botton}>
+            <Button title="Go to Details... again with history stack " onPress={() => navigation.navigate('Details',{itemId: Math.floor(Math.random() * 100)})}/>
+          </TouchableOpacity>
+          <TouchableOpacity style = {style.botton}>
+          <Button title="Go to Details... again without history stack" onPress={() => navigation.push('Details',route.params)}/>
+          </TouchableOpacity>
+          <TouchableOpacity style = {style.botton}>
+          <Button title="Go Back" onPress={() => navigation.goBack()}/>
+          </TouchableOpacity>
+          <TouchableOpacity style = {style.botton}>
+          <Button title="Go Home1" onPress={() => navigation.navigate("Home")}/>
+          </TouchableOpacity>
+          <TouchableOpacity style = {style.botton}>
+          <Button title="Go Home2" onPress={() => navigation.popToTop()}/>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
-const Stack = createNativeStackNavigator();
 
+const style = StyleSheet.create({
+  botton:{
+    backgroundColor:'pink',
+    marginTop:10,
+  }
+})
+
+const Tab = createBottomTabNavigator();
+function TrueHome() {
+  return (
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = focused
+                ? 'ios-information-circle'
+                : 'ios-information-circle-outline';
+            } else if (route.name === 'Settings') {
+              iconName = focused ? 'ios-list-box' : 'ios-list';
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeScreen}  
+          options={{
+          title: 'React Native learn doc',
+          headerStyle: {
+            backgroundColor: '#f4511e',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerRight: () => (
+            <Button
+              onPress={() => alert('This is v0.0.1')}
+              title="version"
+              color="#fff"
+            />
+          ),
+          }}/>
+        <Tab.Screen name="layout" component={FlexDirectionBasics} />
+      </Tab.Navigator>
+  );
+}
+
+const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home2" component={HomeScreen}  options={{ title: 'React Native learn doc' }} />
+      <Stack.Navigator >
+        <Stack.Screen name="Home2" component ={TrueHome}  options={{ headerShown: false }} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="layout" component={FlexDirectionBasics} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
 export default App;
+
+
