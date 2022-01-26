@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FlexDirectionBasics from "./howtolayout"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-
+import Echart from './explore'
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -59,6 +59,23 @@ const style = StyleSheet.create({
   botton:{
     backgroundColor:'pink',
     marginTop:10,
+  },
+  options:{
+    // title: 'React Native learn doc',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerRight: () => (
+      <Button
+        onPress={() => alert('This is v0.0.1')}
+        title="version"
+        color="#fff"
+      />
+    ),
   }
 })
 
@@ -72,13 +89,13 @@ function TrueHome() {
 
             if (route.name === 'Home') {
               iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'ios-list-box' : 'ios-list';
+                ? 'ios-home'
+                : 'ios-home-outline';
+            } else if (route.name === 'Layout') {
+              iconName = focused ? 'ios-airplane' : 'ios-airplane-outline';
+            } else if(route.name ==='Explore'){
+              iconName = focused ? 'ios-map':'ios-map-outline';
             }
-
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: 'tomato',
@@ -86,24 +103,12 @@ function TrueHome() {
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen}  
-          options={{
-          title: 'React Native learn doc',
-          headerStyle: {
-            backgroundColor: '#f4511e',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerRight: () => (
-            <Button
-              onPress={() => alert('This is v0.0.1')}
-              title="version"
-              color="#fff"
-            />
-          ),
-          }}/>
-        <Tab.Screen name="layout" component={FlexDirectionBasics} />
+          options={style.options}
+          />
+        <Tab.Screen name="Layout" component={FlexDirectionBasics} 
+          options={style.options} />
+        <Tab.Screen name="Explore" component={Echart} 
+          options={style.options} />
       </Tab.Navigator>
   );
 }
