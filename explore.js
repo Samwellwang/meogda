@@ -5,20 +5,23 @@ import ChinaJsonData from "./ChinaMap.js";
 
 export default function Demo() {
   const mapData = {
-    visualMap: {
-      show: false,
-      left: "right",
-      top: "center",
-      min: 1,
-      max: 3,
-      calculable: true,
-    },
+    // visualMap: {
+    //   show: true,
+    //   left: "right",
+    //   top: "center",
+    //   min: 1,
+    //   max: 3,
+    //   calculable: true,
+    // },
     geo: [
       {
         type: "map",
         map: "world",
         mapType: "world",
         selectedMode: "single",
+        roam:false,
+        // center: [115.97, 29.71],
+        zoom:1,
         itemStyle: {
           normal: {
             areaStyle: { color: "#B1D0EC" },
@@ -35,6 +38,16 @@ export default function Demo() {
             },
           },
         },
+        regions: [{
+            name: '黑龙江',
+             itemStyle: {
+                areaColor: 'pink',
+                color: 'black'
+            },
+            label:{
+                show:false,
+            },       
+        }],
         data: [],
         roam: true,
       },
@@ -81,9 +94,9 @@ export default function Demo() {
   };
 
   return (
-    <View style={{ height: 300 }}>
-      {/* <RNEChartsPro height={250} option={mapData} onPress ={res=>console.log(this)} customMapData={ChinaJsonData} /> */}
-      <RNEChartsPro height={250} option={mapData} onPress ={res=>console.log(this)} />
+    <View style={{ height: "100%" }}>
+      <RNEChartsPro height={700} option={mapData} onPress ={res=>console.log(this)} customMapData={ChinaJsonData} themeName="dark" />
+      {/* <RNEChartsPro height={700} option={mapData} onPress ={res=>console.log(res) } themeName="dark" /> */}
     </View>
   );
 }
