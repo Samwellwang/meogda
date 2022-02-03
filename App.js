@@ -5,7 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FlexDirectionBasics from "./howtolayout"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import Echart from './explore'
+import Expore from './explore';
+import Eat from './eat';
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -20,6 +21,9 @@ function HomeScreen({ navigation }) {
       <Button 
       title ="change the title" 
       onPress={() => navigation.setOptions({title:"new title"})}/>
+      <Button title="eat page" 
+      onPress={()=>navigation.navigate('Eat')}
+      />
     </View>
   );
 }
@@ -107,7 +111,7 @@ function TrueHome() {
           />
         <Tab.Screen name="Layout" component={FlexDirectionBasics} 
           options={style.options} />
-        <Tab.Screen name="Explore" component={Echart} 
+        <Tab.Screen name="Explore" component={Expore} 
           options={style.options} />
       </Tab.Navigator>
   );
@@ -121,6 +125,7 @@ function App() {
         <Stack.Screen name="Home2" component ={TrueHome}  options={{ headerShown: false }} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="layout" component={FlexDirectionBasics} />
+        <Stack.Screen name="Eat" component={Eat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
