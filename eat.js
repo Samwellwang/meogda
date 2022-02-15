@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, Button, ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import { init, Geolocation } from 'react-native-amap-geolocation'
 
 const Eat = () => {
+  //是否显示圈圈
   const [isLoading, setLoading] = useState(false)
-  const [data, setData] = useState([])
-  const [shopInfo, setShopInfo] = useState({})
-  const [shop, setShop] = useState("")
+  //定位信息
+  // const [data, setData] = useState({});不能及时被更新
+  const data = useRef({})
+  //高德返回的POI信息
+  const [shopInfo, setShopInfo] = useState([])
+  //随机后的商店
+  const [shop, setShop] = useState({})
 
   //amap-geolocation
   // 对于 Android 需要自行根据需要申请权限
@@ -22,24 +27,32 @@ const Eat = () => {
   })
   useEffect(() => {
     getLocation()
-    //获取附近商家
-    //fetch
-    getDate()
   }, [])
+
   //获取经纬度
-  const getLocation = async () => {
+  const getLocation = () => {
     setLoading(true)
     Geolocation.getCurrentPosition(({ coords }) => {
       setLoading(false)
-      setData(coords)
+      // setData(coords);
+      data.current = coords
+      // setData(prveData => {
+      //   //直接取会取不到data的值
+      //   console.log(prveData.longitude, prveData.latitude);
+      //   getDate(prveData.longitude, prveData.latitude);
+      //   return prveData;
+      //  });
+      getData()
+      //获取附近商家
       console.log(coords)
     })
   }
-  const getDate = async () => {
+  const getData = () => {
     const apiOption = {
       key: '2a70f08f53cf459d9c0093ad5fe1ad3a',
       keywords: '',
-      // location: data.longitude, data.latitude,
+      longitude: data.current.longitude,
+      latitude: data.current.latitude,
       radius: 2000,
       types: '050000',
       offset: 50,
@@ -47,9 +60,9 @@ const Eat = () => {
       extensions: 'all',
       sortrule: 'weight',
     }
-    const url = `https://restapi.amap.com/v3/place/around?key=${apiOption.key}&keywords=${apiOption.keywords}&location=${data.longitude},${data.latitude}&radius=${apiOption.radius}&types=${apiOption.types}&offset=${apiOption.pageSize}&page=${apiOption.page}&extensions=${apiOption.extensions}&sortrule=${apiOption.sortrule}`
+    const url = `https://restapi.amap.com/v3/place/around?key=${apiOption.key}&keywords=${apiOption.keywords}&location=${apiOption.longitude},${apiOption.latitude}&radius=${apiOption.radius}&types=${apiOption.types}&offset=${apiOption.pageSize}&page=${apiOption.page}&extensions=${apiOption.extensions}&sortrule=${apiOption.sortrule}`
 
-    await fetch(url, {
+    fetch(url, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -65,23 +78,34 @@ const Eat = () => {
 
   return (
     <View style={Style.background}>
-      <Text>What would you like to eat today?</Text>
-      <Button title="获取位置" onPress={() => {
-        //random between 0 and 19
-        const random = Math.floor(Math.random() * 20);
-        setShop(shopInfo[random].name);
-      }} />
       <View>
         {isLoading ? (
           <ActivityIndicator />
         ) : (
-          <View>
-            <Text>维度：{data.latitude}</Text>
-            <Text>经度：{data.longitude}</Text>
-            <Text>{shop}</Text>
+          <View style={Style.resultView}>
+            {/* <Text>维度：{data.current.latitude}</Text>
+            <Text>经度：{data.current.longitude}</Text> */}
+            <Text style={Style.title}>{shop.name}</Text>
+            <Text>{shop.address}</Text>
+            <Text>
+              {shop.distance}
+              {JSON.stringify(shop) == '{}' ? '' : '米'}
+            </Text>
           </View>
         )}
       </View>
+      <Button
+        title="随机一个"
+        onPress={() => {
+          //random between 0 and 19
+          if (shopInfo.length == 0) {
+            alert('附近没有商家')
+          } else {
+            const random = Math.floor(Math.random() * 20)
+            setShop(shopInfo[random])
+          }
+        }}
+      />
     </View>
   )
 }
@@ -92,7 +116,16 @@ const Style = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'pink',
+    backgroundColor: 'lightsalmon',
+  },
+  resultView: {
+    // flex: 0.4,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 20,
+    color: 'balck',
+    fontWeight: 'bold',
   },
 })
 export default Eat

@@ -125,7 +125,7 @@ function App() {
         <Stack.Screen name="Home2" component ={TrueHome}  options={{ headerShown: false }} />
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="layout" component={FlexDirectionBasics} />
-        <Stack.Screen name="Eat" component={Eat} />
+        <Stack.Screen name="Eat" component={Eat} options={{title:"What would you like to eat today?"}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
