@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Expore from './explore';
 import Eat from './eat';
+import Test from './test';
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -126,6 +127,7 @@ function App() {
         <Stack.Screen name="Details" component={DetailsScreen} />
         <Stack.Screen name="layout" component={FlexDirectionBasics} />
         <Stack.Screen name="Eat" component={Eat} options={{title:"What would you like to eat today?"}} />
+        <Stack.Screen name="Test" component={Test} options={{title:"What would you like to eat today?"}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

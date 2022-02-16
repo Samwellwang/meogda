@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, Button, ActivityIndicator, FlatList, StyleSheet } from 'react-native'
+import { View, Text, Button, ActivityIndicator, FlatList, StyleSheet ,Animated} from 'react-native'
 import { init, Geolocation } from 'react-native-amap-geolocation'
 
 const Eat = () => {
@@ -12,6 +12,8 @@ const Eat = () => {
   const [shopInfo, setShopInfo] = useState([])
   //随机后的商店
   const [shop, setShop] = useState({})
+
+   const anim = useRef(new Animated.Value(1)).current  // 
 
   //amap-geolocation
   // 对于 Android 需要自行根据需要申请权限
@@ -74,11 +76,22 @@ const Eat = () => {
         setShopInfo(res.pois)
         console.log(res.pois)
       })
+  } 
+const buttonClick = () => {
+  //random between 0 and 19
+  if (shopInfo.length == 0) {
+    alert('附近没有商家')
+  } else {
+    const random = Math.floor(Math.random() * 20)
+    setShop(shopInfo[random]);
+    // console.log("shop信息", anim)
+
   }
+}
 
   return (
     <View style={Style.background}>
-      <View>
+      <View style = {{weight:200}}>
         {isLoading ? (
           <ActivityIndicator />
         ) : (
@@ -97,13 +110,7 @@ const Eat = () => {
       <Button
         title="随机一个"
         onPress={() => {
-          //random between 0 and 19
-          if (shopInfo.length == 0) {
-            alert('附近没有商家')
-          } else {
-            const random = Math.floor(Math.random() * 20)
-            setShop(shopInfo[random])
-          }
+            buttonClick();
         }}
       />
     </View>
@@ -116,11 +123,16 @@ const Style = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'lightsalmon',
+    backgroundColor: 'navajowhite',
   },
   resultView: {
-    // flex: 0.4,
+    weight: '80%',
+    height: 100,
     alignItems: 'center',
+    backgroundColor: 'pink',
+    padding: 10,
+    borderRadius: 10,
+
   },
   title: {
     fontSize: 20,
