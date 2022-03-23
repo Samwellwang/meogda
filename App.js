@@ -8,6 +8,8 @@ import { Ionicons } from '@expo/vector-icons';
 import Expore from './explore';
 import Eat from './eat';
 import Test from './test';
+import ToastExample from './ToastExample';
+import { NativeModules } from 'react-native';
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -52,14 +54,16 @@ function DetailsScreen({navigation,route}) {
           <Button title="Go Home1" onPress={() => navigation.navigate("Home")}/>
           </TouchableOpacity>
           <TouchableOpacity style = {style.botton}>
-          <Button title="Go Home2" onPress={() => navigation.popToTop()}/>
+          <Button title="Go Home2" onPress={toast}/>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-
+function toast() {
+  ToastExample.show('Awesome', ToastExample.SHORT);
+} 
 const style = StyleSheet.create({
   botton:{
     backgroundColor:'pink',
@@ -128,6 +132,7 @@ function App() {
         <Stack.Screen name="layout" component={FlexDirectionBasics} />
         <Stack.Screen name="Eat" component={Eat} options={{title:"What would you like to eat today?"}} />
         <Stack.Screen name="Test" component={Test} options={{title:"What would you like to eat today?"}} />
+        {/* <Stack.Screen name="ToastExample" component={ToastExample} options={{title:"ToastExample"}} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

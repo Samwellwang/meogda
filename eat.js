@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { View, Text, Button, ActivityIndicator, FlatList, StyleSheet ,Animated} from 'react-native'
 import { init, Geolocation } from 'react-native-amap-geolocation'
+import { NativeModules } from 'react-native';
 
 const Eat = () => {
   //是否显示圈圈
@@ -77,18 +78,32 @@ const Eat = () => {
         console.log(res.pois)
       })
   } 
-const buttonClick = () => {
-  //random between 0 and 19
-  if (shopInfo.length == 0) {
-    alert('附近没有商家')
-  } else {
+  const buttonClick = () => {
+    //random between 0 and 19
+    if (shopInfo.length == 0) {
+      alert('附近没有商家')
+    } else {
     const random = Math.floor(Math.random() * 20)
-    setShop(shopInfo[random]);
-    // console.log("shop信息", anim)
+      setShop(shopInfo[random]);
+      // console.log("shop信息", anim)
 
+    }
   }
-}
-
+  // /**
+  //    * 获取短信内容
+  //    */
+  // const getAllSMS() {
+ 
+  //       var rnToastAndroid = NativeModules.ToastByAndroid;
+  //       rnToastAndroid.getSmsInPhone().then((map) => {
+  //           console.log(map['sms']);
+  //           //想更直观一点，可以解除下面的注释
+  //           //alert(map['sms']);
+           
+  //       }, (code, message) => {
+  //           alert(message);
+  //       });
+  //   }
   return (
     <View style={Style.background}>
       <View style = {{weight:200}}>
